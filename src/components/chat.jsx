@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { auth, db } from "../firebase";
-import { addDoc, collection, serverTimestamp, getDocs, doc, setDoc, where } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp, getDocs, doc, setDoc, where, updateDoc } from "firebase/firestore";
 import {
     query,
     orderBy,
@@ -33,13 +33,27 @@ const Chat = () => {
                 text: message.trim(),
                 name: displayName,
                 avatar: photoURL,
-                createdAt: serverTimestamp(),
+                createdAt: new Date(),
                 uid,
             };
             setMessage("");
             setMessages((prevMessages) => [...prevMessages, newMessage]);
-            await addDoc(collection(db, "Chats", chatID, "messages"), newMessage);
+            await addDoc(collection(db, "Chats", chatID, "messages"), {
+                ...newMessage,
+                createdAt: serverTimestamp()
+            });
             textareaRef.current.style.height = '2.5rem';
+
+             // Update last message in UserChats
+            await updateDoc(doc(db, "UserChats", auth.currentUser.uid), {
+                [`${chatID}.userInfo.lastMessage`]: newMessage.text,
+                [`${chatID}.timestamp`]: newMessage.createdAt
+                    
+            });
+            await updateDoc(doc(db, "UserChats", Recipent().uid), {
+                [`${chatID}.userInfo.lastMessage`]: newMessage.text,
+                [`${chatID}.timestamp`]: newMessage.createdAt
+            });
         }
     }
     const handleEnter = (event) =>{
@@ -136,6 +150,28 @@ const Chat = () => {
         }
         return recipent;
     }
+    const messageTime = (createdAt) => {
+        // Check if createdAt is a Firestore Timestamp object
+        if (createdAt === '') return '';
+        if (createdAt && createdAt.toDate) {
+            createdAt = createdAt.toDate();
+        }
+    
+        // Check if createdAt is now a Date object
+        if (!(createdAt instanceof Date)) {
+            createdAt = new Date();
+        }
+    
+        let hours = createdAt.getHours();
+        const minutes = createdAt.getMinutes();
+        const seconds = createdAt.getSeconds();
+        const ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+        const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+        return `${hours}:${formattedMinutes}:${formattedSeconds} ${ampm}`;
+    }
     return (
         <div id="container">
             <Menu
@@ -143,6 +179,7 @@ const Chat = () => {
             setChatID={setChatID}
             contacts={contacts}
             setContacts={setContacts}
+            messageTime={messageTime}
              />
             <div id="chat-div">
                 <div id="current-recipent">
@@ -154,13 +191,15 @@ const Chat = () => {
                         if (msg.uid === auth.currentUser.uid){
                             return (
                             <div key={index} className="sent-div">
-                                <p className="sent">{msg.text}</p>
+                                <span className="time">{messageTime(msg.createdAt).replace(/:\d{2}\s/, ' ')}</span>
+                                <p className="sent">{msg.text}</p>  
                             </div>
                             );
                         }else{
                             return (
                                 <div key={msg.id} className="recieved-div">
                                     <p className="recieved">{msg.text}</p>
+                                    <span className="time">{messageTime(msg.createdAt).replace(/:\d{2}\s/, ' ')}</span>
                                 </div>
                                 );
                         }       

@@ -12,23 +12,40 @@ import Search from "./search";
 const signOut = () => {
     auth.signOut();
 }
-const UserDetails = ({ user, uOptions=false }) => {
+const UserDetails = ({ user, uOptions=false, lastMessage="", time="" }) => {
     const { uid, displayName, photoURL } = user;
+    time = time.replace(/:\d{2}\s/, ' ');
+    if(lastMessage && lastMessage.length > 20){
+        lastMessage = lastMessage.substring(0, 20) + "...";
+    }
     return(
         <div className="user-details">
-            <img src={photoURL}/>
-            <p>{displayName}{user.uid === auth.currentUser.uid && uOptions===false ? " (You)" : ""} </p>
+            <div className="contact-info">
+                <img src={photoURL}/>
+                <div>
+                <p>{displayName}{user.uid === auth.currentUser.uid && uOptions===false ? " (You)" : ""} </p>
+                {lastMessage && 
+                <p className="last-message">{lastMessage}</p>
+                }
+                </div>
+            </div>
+            <p>{time}</p>
         </div>
+
     );
 }
-const Menu = ({chatID, setChatID, contacts, setContacts}) =>{
+const Menu = ({chatID, setChatID, contacts, setContacts, messageTime}) =>{
     
     useEffect(() => {
         const q = query(doc(db, "UserChats", auth.currentUser.uid));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             if(!querySnapshot.exists()) return;
-            const chats = Object.entries(querySnapshot.data())?.map(chat => {
-                return chat[1].userInfo;
+            let chats = Object.entries(querySnapshot.data())?.map(chat => {
+                return {...chat[1].userInfo, timeSent: chat[1].timestamp};
+            });
+            chats.sort((a, b) => {
+                if (a.timeSent === b.timeSent) return a.uid.localeCompare(b.uid);
+                return a.timeSent < b.timeSent ? 1 : -1
             });
             setContacts(chats);
         });
@@ -43,14 +60,14 @@ const Menu = ({chatID, setChatID, contacts, setContacts}) =>{
     return (
         <div id="menu">
             <div id="user-options">
-                <UserDetails user={auth.currentUser} uOptions={true}/>
+                <UserDetails user={auth.currentUser} uOptions={true} />
                 <button id="sign-out" className="btn btn-secondary btn-sm" onClick={signOut}>Sign Out</button>
             </div>
             <Search contacts={contacts} setContacts={setContacts} chatID={chatID} setChatID={setChatID} />
             {contacts ? contacts.map((contact) => {
                 return(
                 <div key={contact.uid} className="contact" onClick={() => setID(contact)}>
-                    <UserDetails user={contact}/>
+                    <UserDetails user={contact} lastMessage={contact.lastMessage} time={messageTime(contact.timeSent)} />
                 </div>
             )}):<p>loading users</p>}
         </div>

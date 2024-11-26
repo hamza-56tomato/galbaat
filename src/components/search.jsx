@@ -51,17 +51,19 @@ const Search = ({contacts, setContacts, chatID, setChatID}) => {
                 [newChatID + ".userInfo"]: {
                     displayName: user.displayName,
                     photoURL: user.photoURL,
-                    uid: user.uid
+                    uid: user.uid,
+                    lastMessage: ""
                 },
-                [newChatID + ".timestamp"]: serverTimestamp()
+                [newChatID + ".timestamp"]: ''
             });
             await updateDoc(doc(db, "UserChats", user.uid), {
                 [newChatID + ".userInfo"]: {
                     displayName: auth.currentUser.displayName,
                     photoURL: auth.currentUser.photoURL,
-                    uid: auth.currentUser.uid
+                    uid: auth.currentUser.uid,
+                    lastMessage: ""
                 },
-                [newChatID + ".timestamp"]: serverTimestamp()
+                [newChatID + ".timestamp"]: ''
             });
         }
         setSearchResults([]);

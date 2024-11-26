@@ -51,6 +51,9 @@
     
 }
 .contact{
+    width: 97%;
+    margin: auto;
+    border-radius: 5px;
     cursor: pointer;
 }
 .contact:hover{
@@ -59,20 +62,37 @@
 .user-details{
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 50px;
     padding: 0 10px;
-    p{
-        text-align: center;
-        font-size: 1rem;
-        margin: 5px;
-    }
+   
+}
+.contact-info{
+    display: flex;
+    align-items: center;
     img{
+        margin-right: 10px;
         border-radius: 50%;
         width: 2rem;
+        height: 2rem;
     }
+    p{
+        margin: 0;
+        padding: 0;
+    }
+    .last-message{
+        font-size: 0.8rem;
+        color: #000;
+    }
+   
+}
+.time{
+    font-size: 0.8rem;
+    color: #000;
+    margin: 5px;
+    text-align: right;
 }
 #current-recipent{
     display: flex;
