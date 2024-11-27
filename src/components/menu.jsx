@@ -29,7 +29,7 @@ const UserDetails = ({ user, uOptions=false, lastMessage="", time="" }) => {
                 }
                 </div>
             </div>
-            <p>{time}</p>
+            <p className="contact-time">{time}</p>
         </div>
 
     );
@@ -64,15 +64,16 @@ const Menu = ({chatID, setChatID, contacts, setContacts, messageTime}) =>{
                 <button id="sign-out" className="btn btn-secondary btn-sm" onClick={signOut}>Sign Out</button>
             </div>
             <Search contacts={contacts} setContacts={setContacts} chatID={chatID} setChatID={setChatID} />
-            {contacts ? contacts.map((contact) => {
-
-                let time = contact.timeSent !== '' ? formatDate(new Date(contact.timeSent.toDate())) : '';
-                if (time === 'Today') time = messageTime(contact.timeSent);
-                return(
-                <div key={contact.uid} className="contact" onClick={() => setID(contact)}>
-                    <UserDetails user={contact} lastMessage={contact.lastMessage} time={time.toString()} />
-                </div>
-            )}):<p>loading users</p>}
+            <div id="contacts">
+                {contacts ? contacts.map((contact) => {
+                    let time = contact.timeSent !== '' ? formatDate(new Date(contact.timeSent.toDate())) : '';
+                    if (time === 'Today') time = messageTime(contact.timeSent);
+                    return(
+                    <div key={contact.uid} className="contact" onClick={() => setID(contact)}>
+                        <UserDetails user={contact} lastMessage={contact.lastMessage} time={time.toString()} />
+                    </div>
+                )}):<p>loading users</p>}
+            </div>
         </div>
     );
 }

@@ -27,10 +27,13 @@
 }
 
 #menu{
+    display: flex;
+    flex-direction: column;
     margin: auto;
     margin-top: 2%;
     width: 20%;
     height: 80%;
+    padding-bottom: 5px;
     border-radius: 20px;
     background-color: #fff5;
     #user-options{
@@ -47,9 +50,26 @@
         }
     
     }
-
-    
+    #contacts{
+        flex: 1;
+        overflow-y: auto;
+        
+    }
+ 
 }
+#contacts::-webkit-scrollbar {
+    width: 10px;
+}
+  /* Track */
+  #contacts::-webkit-scrollbar-track {
+    margin: 10px;
+}
+  /* Handle */
+#contacts::-webkit-scrollbar-thumb {
+    background-color: #fff5;    
+    border-radius: 20px;
+}
+
 .contact{
     width: 97%;
     margin: auto;
@@ -92,6 +112,11 @@
     font-size: 0.8rem;
     color: #000;
     margin: 5px;
+    text-align: right;
+}
+.contact-time{
+    font-size: 0.9rem;
+    color: #000;
     text-align: right;
 }
 #current-recipent{
@@ -138,7 +163,7 @@
 .date {
     margin: 10px 0;
     font-size: 12px;
-    color: #999;
+    color: #555;
     background-color: #e1f3fb;
     padding: 5px 10px;
     border-radius: 10px;
