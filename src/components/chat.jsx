@@ -8,7 +8,7 @@ import {
     limit,
   } from "firebase/firestore";
 import {Menu, UserDetails} from "./menu";
-
+import { formatDate, isSameDay } from "../date";
 const Chat = () => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
@@ -188,21 +188,34 @@ const Chat = () => {
                 <div id="messages-div" ref={messagesDivRef} onScroll={handleScroll}>
                     
                     {messages && messages.map((msg, index) => {
-                        if (msg.uid === auth.currentUser.uid){
+                        const previousMessage = messages[index - 1];
+                        const msgDate = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date(msg.createdAt);
+                        const previousMsgDate = previousMessage?.createdAt?.toDate ? previousMessage.createdAt.toDate() : new Date(previousMessage?.createdAt);
+                        // Check if both msgDate and previousMsgDate are valid Date objects before calling isSameDay
+                        const isSameDayMessage = previousMessage && previousMsgDate instanceof Date && !isNaN(previousMsgDate)
+                        ? isSameDay(msgDate, previousMsgDate)
+                        : false;
+                        if (msg.uid === auth.currentUser.uid) {
                             return (
-                            <div key={index} className="sent-div">
-                                <span className="time">{messageTime(msg.createdAt).replace(/:\d{2}\s/, ' ')}</span>
-                                <p className="sent">{msg.text}</p>  
-                            </div>
+                                <>
+                                    {!isSameDayMessage && <p className="date">{formatDate(msgDate)}</p>}
+                                    <div key={index} className="sent-div">
+                                        <span className="time">{messageTime(msg.createdAt).replace(/:\d{2}\s/, ' ')}</span>
+                                        <p className="sent">{msg.text}</p>
+                                    </div>
+                                </>
                             );
-                        }else{
+                        } else {
                             return (
-                                <div key={msg.id} className="recieved-div">
-                                    <p className="recieved">{msg.text}</p>
-                                    <span className="time">{messageTime(msg.createdAt).replace(/:\d{2}\s/, ' ')}</span>
-                                </div>
-                                );
-                        }       
+                                <>
+                                    {!isSameDayMessage && <p className="date">{formatDate(msgDate)}</p>}
+                                    <div key={msg.id} className="recieved-div">
+                                        <p className="recieved">{msg.text}</p>
+                                        <span className="time">{messageTime(msg.createdAt).replace(/:\d{2}\s/, ' ')}</span>
+                                    </div>
+                                </>
+                            );
+                        }
                     })}                    
                     <div id="new-count" className={isNearBottom ? "fade-out" : ""}>
                         {newMessagesCount !== 0 && (<span>{newMessagesCount}</span>)}

@@ -8,7 +8,7 @@ import {
     limit,
   } from "firebase/firestore";
 import Search from "./search";
-
+import { formatDate, isSameDay } from "../date";
 const signOut = () => {
     auth.signOut();
 }
@@ -56,7 +56,7 @@ const Menu = ({chatID, setChatID, contacts, setContacts, messageTime}) =>{
         : contact.uid + "_" + auth.currentUser.uid; 
         setChatID(newChatID);
     }
-
+    
     return (
         <div id="menu">
             <div id="user-options">
@@ -65,9 +65,12 @@ const Menu = ({chatID, setChatID, contacts, setContacts, messageTime}) =>{
             </div>
             <Search contacts={contacts} setContacts={setContacts} chatID={chatID} setChatID={setChatID} />
             {contacts ? contacts.map((contact) => {
+
+                let time = contact.timeSent !== '' ? formatDate(new Date(contact.timeSent.toDate())) : '';
+                if (time === 'Today') time = messageTime(contact.timeSent);
                 return(
                 <div key={contact.uid} className="contact" onClick={() => setID(contact)}>
-                    <UserDetails user={contact} lastMessage={contact.lastMessage} time={messageTime(contact.timeSent)} />
+                    <UserDetails user={contact} lastMessage={contact.lastMessage} time={time.toString()} />
                 </div>
             )}):<p>loading users</p>}
         </div>
