@@ -175,7 +175,7 @@ export const Messages = ({chatID, setChatID, contacts, messageTime, isMobile, sh
                                 {!isSameDayMessage && <p className="date">{formatDate(msgDate)}</p>}
                                 <div className="sent-div">
                                     <span className="time">{messageTime(msg.createdAt).replace(/:\d{2}\s/, ' ')}</span>
-                                    <p className="sent">{msg.text}</p>
+                                    <p className={`sent ${isMobile ? 'mobile-msg' : ''}`}>{msg.text}</p>
                                 </div>
                             </div>
                         );
@@ -184,7 +184,7 @@ export const Messages = ({chatID, setChatID, contacts, messageTime, isMobile, sh
                             <div key={index}>
                                 {!isSameDayMessage && <p className="date">{formatDate(msgDate)}</p>}
                                 <div className="recieved-div">
-                                    <p className="recieved">{msg.text}</p>
+                                    <p className={`recieved ${isMobile ? 'mobile-msg' : ''}`}>{msg.text}</p>
                                     <span className="time">{messageTime(msg.createdAt).replace(/:\d{2}\s/, ' ')}</span>
                                 </div>
                             </div>
