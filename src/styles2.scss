@@ -289,3 +289,12 @@
   .hide{
     display: none !important;
  }
+ #sign-out{
+  white-space: nowrap;
+  padding: 0.2rem;
+ }
+ @media (max-width: 1200px) {
+  html{
+    font-size: 12px;
+  }
+}
