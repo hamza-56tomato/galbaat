@@ -85,8 +85,9 @@ const Search = ({contacts, setContacts, chatID, setChatID}) => {
                 {searchResults.map((user, index) => (
                     <div key={index} className="contact" onClick={() => createChat(user)}><UserDetails user={user} /></div>
                 ))}
+                {searchResults.length != 0 && <hr />}
             </div>
-            <hr />
+            
         </div>
     );
 }

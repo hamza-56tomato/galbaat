@@ -34,7 +34,7 @@ const UserDetails = ({ user, uOptions=false, lastMessage="", time="" }) => {
 
     );
 }
-const Menu = ({chatID, setChatID, contacts, setContacts, messageTime}) =>{
+const Menu = ({chatID, setChatID, contacts, setContacts, messageTime, isMobile, showChat, setShowChat}) =>{
     
     useEffect(() => {
         const q = query(doc(db, "UserChats", auth.currentUser.uid));
@@ -54,11 +54,13 @@ const Menu = ({chatID, setChatID, contacts, setContacts, messageTime}) =>{
     const setID = (contact) => {
         const newChatID = auth.currentUser.uid > contact.uid ? auth.currentUser.uid + "_" + contact.uid 
         : contact.uid + "_" + auth.currentUser.uid; 
+        setShowChat(true);
         setChatID(newChatID);
+        console.log("showChat: ", showChat);
     }
     
     return (
-        <div id="menu">
+        <div id="menu" className={`${isMobile ? 'mobile' : 'desktop'} ${isMobile && showChat ? 'hide' : ''}`}>
             <div id="user-options">
                 <UserDetails user={auth.currentUser} uOptions={true} />
                 <button id="sign-out" className="btn btn-secondary btn-sm" onClick={signOut}>Sign Out</button>

@@ -5,6 +5,9 @@ import { GoogleAuthProvider, signInWithPopup, signInWithRedirect} from "firebase
 import { collection, addDoc, query, where, getDocs, doc, setDoc } from "firebase/firestore";
 
 const LoginPage = () => {
+  const [theme] = useState(() => {
+    return localStorage.getItem('theme') || "linear-gradient(pink, #ff6ec7)";
+  });
   const googleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
@@ -41,14 +44,20 @@ const LoginPage = () => {
     }
   };
 
-  return(
-    <div id="login-container">
+  return (
+    <div id="login-container" style={{background: theme}}>
       <header>
-          <h1>Galbaat</h1>
+        <h1>Galbaat</h1>
+        <p className="tagline">Connect instantly, chat seamlessly</p>
       </header>
-      <div>
-          <h2>please log in brothaaa</h2>
-          <button onClick={googleSignIn} className="btn btn-primary btn-lg">Sign In</button>
+      <div className="login-content">
+        <h2>Welcome to Galbaat!</h2>
+        <p className="login-description">
+          Sign in with your Google account to start chatting instantly.
+        </p>
+        <button onClick={googleSignIn} className="btn btn-primary btn-lg signin-button">
+          <i className="fa fa-google"></i> Continue with Google
+        </button>
       </div>
     </div>
   );

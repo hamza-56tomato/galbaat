@@ -6,7 +6,6 @@
     height: 100vh;
 }
 body, html{
-    background: linear-gradient(pink, #ff6ec7);
     height: 100vh;
     overflow: hidden;
 }
@@ -16,6 +15,7 @@ body, html{
     height: 100vh;
 }
 #container{
+    /*  */
     height: 100%;
     width: 100%;
     display: flex;
@@ -62,6 +62,12 @@ body, html{
     background-color: #fff5;
     border-radius: 20px;
 }
+.mobile-chat-div{
+    border-radius: 0 !important;
+    margin-top: 0 !important;
+    width: 100% !important;
+    height: 85% !important;
+}
 #messages-div{
     overflow: auto;
     height: 90%;
@@ -69,7 +75,6 @@ body, html{
     scroll-behavior: smooth;
     padding: 10px;
     min-height: calc(80% - 150px);
-
 }
 #input-div{
     margin: 10px auto;
@@ -92,19 +97,26 @@ body, html{
     overflow: auto;
     line-height: 1.5rem;
 }
+.mobile-text-area{
+    height: 2.5rem !important;
+    max-height: 3rem !important;
+}
 #input-div button{
     height: 2.5rem;
-    width: 7%;
     background-color: white;
     border-radius: 20px;
 }
 #new-count{
-    position: fixed;
+    position: absolute;
     top: 79%;
-    left: 60%;
+    right: 40%;
     opacity: 1;
     visibility: visible;
     transition: opacity 0.3s ease;
+}
+.mobile-new-count{
+    top: 85% !important;
+    right: 50% !important;
 }
 #new-count.fade-out {
     opacity: 0;
@@ -127,6 +139,10 @@ body, html{
     right: 1px;
     color: rebeccapurple;
     
+}
+.no-chat-text{
+    font-family: cursive, serif;
+    color: azure;
 }
 
 #messages-div::-webkit-scrollbar {
@@ -154,3 +170,9 @@ body, html{
     background-color: grey;
     border-radius: 10px;
  }
+
+#current-recipent button {
+    border: none;
+    background: none;
+    color: azure;
+}
