@@ -56,7 +56,6 @@ const Menu = ({chatID, setChatID, contacts, setContacts, messageTime, isMobile, 
         : contact.uid + "_" + auth.currentUser.uid; 
         setShowChat(true);
         setChatID(newChatID);
-        console.log("showChat: ", showChat);
     }
     
     return (
@@ -65,7 +64,7 @@ const Menu = ({chatID, setChatID, contacts, setContacts, messageTime, isMobile, 
                 <UserDetails user={auth.currentUser} uOptions={true} />
                 <button id="sign-out" className="btn btn-secondary btn-sm" onClick={signOut}>Sign Out</button>
             </div>
-            <Search contacts={contacts} setContacts={setContacts} chatID={chatID} setChatID={setChatID} />
+            <Search setChatID={setChatID} />
             <div id="contacts">
                 {contacts ? contacts.map((contact) => {
                     let time = contact.timeSent !== '' ? formatDate(new Date(contact.timeSent.toDate())) : '';

@@ -3,7 +3,7 @@ import { addDoc, collection, serverTimestamp, getDocs, getDoc, doc, setDoc, wher
 import {useState, useEffect} from "react";
 import { UserDetails } from "./menu";
 
-const Search = ({contacts, setContacts, chatID, setChatID}) => {
+const Search = ({setChatID}) => {
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
