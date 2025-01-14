@@ -50,7 +50,7 @@ const Menu = ({chatID, setChatID, contacts, setContacts, messageTime, isMobile, 
             setContacts(chats);
         });
         return () => unsubscribe();
-    }, []);
+    }, [chatID]);
     const setID = (contact) => {
         const newChatID = auth.currentUser.uid > contact.uid ? auth.currentUser.uid + "_" + contact.uid 
         : contact.uid + "_" + auth.currentUser.uid; 
