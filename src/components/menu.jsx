@@ -16,7 +16,7 @@ const UserDetails = ({ user, uOptions=false, lastMessage="", time="" }) => {
     const { uid, displayName, photoURL } = user;
     time = time.replace(/:\d{2}\s/, ' ');
     if(lastMessage && lastMessage.length > 20){
-        lastMessage = lastMessage.substring(0, 20) + "...";
+        lastMessage = lastMessage.substring(0, 17) + "...";
     }
     return(
         <div className="user-details">
@@ -64,7 +64,7 @@ const Menu = ({chatID, setChatID, contacts, setContacts, messageTime, isMobile, 
                 <UserDetails user={auth.currentUser} uOptions={true} />
                 <button id="sign-out" className="btn btn-secondary btn-sm" onClick={signOut}>Sign Out</button>
             </div>
-            <Search setChatID={setChatID} />
+            <Search chatID={chatID} setChatID={setChatID} />
             <div id="contacts">
                 {contacts ? contacts.map((contact) => {
                     let time = contact.timeSent !== '' ? formatDate(new Date(contact.timeSent.toDate())) : '';

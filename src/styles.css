@@ -7,7 +7,6 @@
 }
 body, html{
     height: 100vh;
-    overflow: hidden;
 }
 
 #root{
@@ -16,7 +15,7 @@ body, html{
 }
 #container{
     /*  */
-    height: 100%;
+    height: 100vh;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -117,6 +116,17 @@ body, html{
     visibility: visible;
     transition: opacity 0.3s ease;
 }
+.new-msg-count{
+    display: inline-block;
+    position: relative !important;
+    top: -8px;
+    left: 3px;
+    background-color: whitesmoke;
+    text-align: center !important;
+    width: 1rem !important;
+    border-radius: 50%;
+    font-weight: bold;
+}
 .mobile-new-count{
     top: 85% !important;
     right: 50% !important;
@@ -130,7 +140,7 @@ body, html{
 #new-count button{
     border-radius: 50px;
     border: none;
-    margin: 2px;
+    margin: 0;
     position: fixed;
 }
 .fa-arrow-down{

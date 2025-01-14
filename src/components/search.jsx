@@ -3,11 +3,11 @@ import { addDoc, collection, serverTimestamp, getDocs, getDoc, doc, setDoc, wher
 import {useState, useEffect} from "react";
 import { UserDetails } from "./menu";
 
-const Search = ({setChatID}) => {
+const Search = ({chatID, setChatID}) => {
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
-
+    const [searched, setSearched] = useState(false);
     useEffect(() => {
         const fetchUsers = async () => {
             const snapshot = await getDocs(collection(db, "users"));
@@ -16,7 +16,10 @@ const Search = ({setChatID}) => {
         };
         fetchUsers();
     }, []);
-
+    useEffect(() => {
+        setSearched(false);
+        setSearchResults([]);
+    }, [chatID]);
     const handleEnter = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault(); // Prevents adding a new line
@@ -34,8 +37,10 @@ const Search = ({setChatID}) => {
                 user.displayName.toLowerCase().includes(search.toLowerCase())
             );
             setSearchResults(results);
+            setSearched(true);
         } else {
             setSearchResults([]);
+            setSearched(false);
         }
         setSearch('');
     }
@@ -43,7 +48,7 @@ const Search = ({setChatID}) => {
     const createChat = async (user) => {
         const newChatID = auth.currentUser.uid > user.uid ? auth.currentUser.uid + "_" + user.uid 
         : user.uid + "_" + auth.currentUser.uid;
-
+        setSearched(false);
         const chat = await getDoc(doc(db, "Chats", newChatID));
         if(!chat.exists()){
             await setDoc(doc(db, "Chats", newChatID), {});
@@ -85,6 +90,7 @@ const Search = ({setChatID}) => {
                 {searchResults.map((user, index) => (
                     <div key={index} className="contact" onClick={() => createChat(user)}><UserDetails user={user} /></div>
                 ))}
+                {searched && searchResults.length === 0 && <><p>No results</p><hr /></>}
                 {searchResults.length != 0 && <hr />}
             </div>
             

@@ -193,7 +193,7 @@ export const Messages = ({chatID, setChatID, contacts, messageTime, isMobile, sh
                     }
                 })}                    
                 <div id="new-count" className={`${isNearBottom ? "fade-out" : ""} ${isMobile ? "mobile-new-count" : ""}`}>
-                    {newMessagesCount !== 0 && (<span>{newMessagesCount}</span>)}
+                    {newMessagesCount !== 0 && (<span className="new-msg-count">{newMessagesCount}</span>)}
                     <button onClick={scroll}><i className="fa fa-arrow-down"></i></button>
                 </div>
             </div>
