@@ -80,7 +80,6 @@ export const Messages = ({chatID, setChatID, contacts, messageTime, isMobile, sh
 
     //messages listener
     useEffect(() => {
-        console.log('hhhhhhhhhhh');
         if (!chatID) return;
         const initialFetch = async () => {
             const initialQuery = query(
